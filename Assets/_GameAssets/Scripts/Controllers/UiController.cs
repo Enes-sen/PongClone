@@ -7,9 +7,18 @@ using UnityEngine.UI;
 
 public class UiController : MonoBehaviour
 {
+    [Header("Referances")]
     [SerializeField] private Text TLeft,TRight,StateT;
     [SerializeField] private Button TryB,MenuB;
+    [Header("Sfx Settings")]
+    [SerializeField] private AudioSource _Audiosource;
+    [SerializeField] private AudioClip SoundClip;
 
+    private void Start()
+    {
+        TryB.onClick.AddListener(LoadSceneTry);
+        MenuB.onClick.AddListener(LoadSceneMenu);
+    }
     public void UpdateScore (Side _Side, ScoreController _Cls)
     {
         switch (_Side)
@@ -31,6 +40,12 @@ public class UiController : MonoBehaviour
         TryB.gameObject.SetActive(true);
         MenuB.gameObject.SetActive(true);
     }
+    private void LoadSceneTry() { StartCoroutine(SceneLoader(0,0.1f)); }
+    private void LoadSceneMenu() { StartCoroutine(SceneLoader(1,0.1f)); }
+    private IEnumerator SceneLoader( int id ,float time)
+    {
 
-    public void LoadScene(int id) { SceneManager.LoadScene(id, LoadSceneMode.Single); }
+        yield return new WaitForSeconds(time);
+        SceneManager.LoadScene(id, LoadSceneMode.Single);
+    }
 }
